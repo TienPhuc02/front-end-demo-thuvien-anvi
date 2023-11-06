@@ -1,9 +1,11 @@
 "use client";
 import Image from "next/image";
 import { Inter } from "next/font/google";
+import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import { Checkbox } from "antd";
 import { useState } from "react";
+import FormLogin from "@/components/FormLogin";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -12,7 +14,7 @@ const inter = Inter({
 
 export default function Home() {
   const [rememberMe, setRememberMe] = useState(false);
-
+  const router = useRouter();
   const handleRememberMeChange = () => {
     setRememberMe(!rememberMe);
   };
@@ -84,7 +86,7 @@ export default function Home() {
             Sign in to stay connected.
           </p>
         </div>
-        <div className="content-left-form-login flex flex-start flex-col mb-[24px]">
+        {/* <div className="content-left-form-login flex flex-start flex-col mb-[24px]">
           <div className="email-field mb-[16px] flex flex-start flex-col">
             <span
               className={` ${inter.variable}  text-[#8A92A6] text-[16px] font-normal mb-[8px] `}
@@ -130,16 +132,21 @@ export default function Home() {
           className={`button-sign-in-form-login ${inter.variable}  text-[#fff] text-[16px] font-light py-[8px] px-[24px] bg-[#3a57e8] text-center max-w-[190px] max-h-[250px] mx-auto cursor-pointer rounded-[4px] mb-[16px]`}
         >
           Sign in
-        </div>
+        </div>*/}
+        <FormLogin />
         <div
           className={`  ${inter.variable} navigate-sign-up-form-login text-center`}
         >
           Don’t have an account?{" "}
-          <span className="text-[#3a57e8] cursor-pointer">
+          <span
+            className="text-[#3a57e8] cursor-pointer"
+            onClick={() => router.push("/sign-up")}
+          >
             Click here to sign up.
           </span>
         </div>
       </div>
+
       <div className="content-right-main-login-page relative min-h-screen">
         <Image
           layout="fill"
