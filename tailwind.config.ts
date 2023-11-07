@@ -8,9 +8,7 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      fontFamily: {
-        inter: ["var(--font-inter)"],
-      },
+     
     },
   },
   plugins: [],
