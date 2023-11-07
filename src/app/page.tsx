@@ -1,7 +1,6 @@
 "use client";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import FormLogin from "@/components/AuthPage/FormLogin";
 import { Roboto } from "next/font/google";
 import HeaderLogo from "@/components/AuthPage/HeaderLogo";
@@ -16,7 +15,7 @@ export default function Home() {
   return (
     <main className={roboto.className}>
       <div className="container-main-login-page grid grid-cols-2">
-        <div className="content-left-main-login-page mx-auto my-auto max-w-[450px] max-h-[600px] w-full h-full max-[800px]:p-3  ">
+        <div className="content-left-main-login-page mx-auto my-auto max-w-[450px] max-h-[600px] w-full h-full max-[00px]:p-3  ">
           <HeaderLogo
             title={"Đăng Nhập"}
             description={" Sign in to stay conntected."}
