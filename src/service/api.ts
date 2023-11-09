@@ -1,5 +1,5 @@
 import axios from "../util/customizeAPI";
-const getAPILogin = (data: { userName: string; password: string }) => {
-  return axios.get("auth/login", data);
+const getAPILogin = async (data: { username: any; password: any }) => {
+  return await axios.post("auth/login", data);
 };
 export { getAPILogin };

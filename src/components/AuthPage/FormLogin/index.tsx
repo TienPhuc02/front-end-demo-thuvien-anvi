@@ -25,8 +25,13 @@ const FormLogin: React.FC = () => {
   const [form] = Form.useForm();
   const formRef = React.useRef<FormInstance>(null);
   const onFinish = async (values: any) => {
-    console.log("Success:", values);
-    form.resetFields();
+    const dataFormLogin = {
+      username: values.userName,
+      password: values.password,
+    };
+    const res = await getAPILogin(dataFormLogin);
+    console.log("🚀 ~ file: index.tsx:33 ~ onFinish ~ res:", res);
+    // form.resetFields();
     message.success("Login Success!!");
   };
 

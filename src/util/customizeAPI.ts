@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "http://localhost:8083/api/v1/",
+  baseURL: "https://dam.vietlac.com/api/v1/",
   withCredentials: true,
 });
 

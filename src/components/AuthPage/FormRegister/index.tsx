@@ -1,3 +1,4 @@
+import axios from "axios";
 import {
   Button,
   Col,
@@ -14,7 +15,7 @@ import {
 import { Roboto } from "next/font/google";
 import { useRouter } from "next/navigation";
 
-import React from "react";
+import React, { useEffect } from "react";
 const roboto = Roboto({
   subsets: ["latin"],
   weight: ["100", "300"],
@@ -52,10 +53,18 @@ const FormRegister = () => {
   };
   const onFinish = async (values: any) => {
     console.log("Success:", values);
-    const dataFormLogin = {
+    const dataFormRegister = {
       userName: values.userName,
+      remember: values.remember,
+      firstName: values.firstName,
+      lastName: values.lastName,
       password: values.password,
+      passwordConfirm: values.passwordConfirm,
+      emailAddress: values.emailAddress,
+      phoneNumber: values.phoneNumber,
+      gender: values.gender,
     };
+
     form.resetFields();
     message.success("Login Success!!");
   };
@@ -68,17 +77,36 @@ const FormRegister = () => {
     // Watch all values
     const values = Form.useWatch([], form);
 
-    React.useEffect(() => {
-      form.validateFields({ validateOnly: true }).then(
-        () => {
-          setSubmittable(true);
-        },
-        () => {
-          setSubmittable(false);
-        }
-      );
-    }, [values]);
+    // React.useEffect(() => {
+    //   form.validateFields({ validateOnly: true }).then(
+    //     () => {
+    //       setSubmittable(true);
+    //     },
+    //     () => {
+    //       setSubmittable(false);
+    //     }
+    //   );
+    // }, [values]);
 
+    useEffect(() => {
+      var myHeaders = new Headers();
+      myHeaders.append("User-Agent", "Apidog/1.0.0 (https://apidog.com)");
+      myHeaders.append("Authorization", "Basic ZGV2YWRtaW46MTIzMTIz");
+      myHeaders.append("Accept", "*/*");
+      myHeaders.append("Host", "vls.vietlacapi.com");
+      myHeaders.append("Connection", "keep-alive");
+
+      var requestOptions = {
+        method: "GET",
+        headers: myHeaders,
+        redirect: "follow" as RequestRedirect,
+      };
+
+      fetch("https://vls.vietlacapi.com/api/v1/App/user", requestOptions)
+        .then((response) => response.text())
+        .then((result) => console.log(result))
+        .catch((error) => console.log("error", error));
+    }, []);
     return (
       <Button
         type="primary"
@@ -86,8 +114,10 @@ const FormRegister = () => {
         htmlType="submit"
         disabled={!submittable}
       >
-        <span className={` navigate-sign-up-form-login text-center`}>
-          Đăng nhập
+        <span
+          className={` navigate-sign-up-form-login text-center`}
+        >
+          Đăng Ki
         </span>
       </Button>
     );
