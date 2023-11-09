@@ -1,5 +1,7 @@
 "use client";
 import Image from "next/image";
+import { Body, getClient } from "@tauri-apps/api/http";
+
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import FormLogin from "@/components/AuthPage/FormLogin";
@@ -10,21 +12,25 @@ const roboto = Roboto({
   weight: ["100", "300"],
   variable: "--font-robot",
 });
-export default function Home() {
-  const router = useRouter();
-  const onClicktestAPI = () => {
-    axios({
-      method: "GET",
-      url: "https://vls.vietlacapi.com/api/v1/App/user",
+
+const client = getClient();
+const onClicktestAPI = async () => {
+  const response = await (await client).get(
+    "https://vls.vietlacapi.com/api/v1/App/user",
+    {
+      body: Body.json({
+        name: "devadmin",
+        password: "123123",
+      }),
       headers: {
         Authorization: "Basic ZGV2YWRtaW46MTIzMTIz",
       },
-      auth: {
-        username: "devadmin",
-        password: "123123",
-      },
-    });
-  };
+    }
+  );
+  console.log("🚀 ~ file: page.tsx:30 ~ onClicktestAPI ~ response:", response);
+};
+export default function Home() {
+  const router = useRouter();
   return (
     <main className={roboto.className}>
       <div className="container-main-login-page grid grid-cols-2">

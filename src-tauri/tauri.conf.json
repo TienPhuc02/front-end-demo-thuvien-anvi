@@ -12,7 +12,18 @@
   },
   "tauri": {
     "allowlist": {
-      "all": false
+      "all": true,
+      "fs": {
+        "scope": {
+          "allowHTTP": true,
+          "network": ["https://vls.vietlacapi.com"]
+        }
+      },
+      "http": {
+        "all": true,
+        "request": true,
+        "scope": ["https://*", "http://*"]
+      }
     },
     "bundle": {
       "active": true,
