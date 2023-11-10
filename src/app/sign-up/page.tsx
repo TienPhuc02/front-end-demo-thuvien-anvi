@@ -26,7 +26,6 @@ const roboto = Roboto({
 const { Option } = Select;
 type FieldType = {
   userName?: string;
-  remember?: boolean;
   firstName?: string;
   lastName?: string;
   password?: string;

@@ -1,8 +1,6 @@
 "use client";
 import Image from "next/image";
 import { Body, getClient } from "@tauri-apps/api/http";
-
-import axios from "axios";
 import { useRouter } from "next/navigation";
 import FormLogin from "@/components/AuthPage/FormLogin";
 import { Roboto } from "next/font/google";
@@ -13,24 +11,33 @@ const roboto = Roboto({
   variable: "--font-robot",
 });
 
-const client = getClient();
-const onClicktestAPI = async () => {
-  const response = await (await client).get(
-    "https://vls.vietlacapi.com/api/v1/App/user",
-    {
-      body: Body.json({
-        name: "devadmin",
-        password: "123123",
-      }),
-      headers: {
-        Authorization: "Basic ZGV2YWRtaW46MTIzMTIz",
-      },
-    }
-  );
-  console.log("🚀 ~ file: page.tsx:30 ~ onClicktestAPI ~ response:", response);
-};
 export default function Home() {
   const router = useRouter();
+  const clickTestAPi = async () => {
+    const client = await getClient();
+    const res = await client.post("https://dam.vietlac.com/api/v1/User", {
+      body: Body.json({
+        userName: "0888363810",
+        firstName: "phuc23",
+        name: "phuc23",
+        lastName: "do1",
+        password: "123456",
+        passwordConfirm: "123456",
+        emailAddress: "1234562123@vls.vn",
+        phoneNumber: "0888363810",
+        gender: "Male",
+      }),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization-Token":
+          "ZGV2YWRtaW46MjY3OTk1YmQxMDdiYTllNTIzNGJlMzUzYmQ1MWU3ODU=",
+      },
+      type: "Json",
+      payload: "",
+    });
+    console.log(res);
+  };
+
   return (
     <main className={roboto.className}>
       <div className="container-main-login-page grid grid-cols-2">
@@ -50,7 +57,7 @@ export default function Home() {
             >
               Click here to sign up.
             </span>
-            <div className="mt-5" onClick={onClicktestAPI}>
+            <div className="mt-5" onClick={clickTestAPi}>
               test API
             </div>
           </div>

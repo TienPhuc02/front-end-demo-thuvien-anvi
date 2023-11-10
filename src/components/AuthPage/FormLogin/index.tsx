@@ -31,7 +31,7 @@ const FormLogin: React.FC = () => {
     };
     const res = await getAPILogin(dataFormLogin);
     console.log("🚀 ~ file: index.tsx:33 ~ onFinish ~ res:", res);
-    // form.resetFields();
+    form.resetFields();
     message.success("Login Success!!");
   };
 

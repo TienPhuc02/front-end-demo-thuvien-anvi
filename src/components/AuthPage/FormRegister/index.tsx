@@ -16,6 +16,8 @@ import { Roboto } from "next/font/google";
 import { useRouter } from "next/navigation";
 
 import React, { useEffect } from "react";
+import { getAPIRegister } from "@/service/api";
+import { Body, getClient } from "@tauri-apps/api/http";
 const roboto = Roboto({
   subsets: ["latin"],
   weight: ["100", "300"],
@@ -24,9 +26,9 @@ const roboto = Roboto({
 const { Option } = Select;
 type FieldType = {
   userName?: string;
-  remember?: boolean;
   firstName?: string;
   lastName?: string;
+  name?: string;
   password?: string;
   passwordConfirm?: string;
   emailAddress?: string;
@@ -38,13 +40,13 @@ const FormRegister = () => {
   const formRef = React.useRef<FormInstance>(null);
   const onGenderChange = (value: string) => {
     switch (value) {
-      case "male":
+      case "Male":
         formRef.current?.setFieldsValue({ note: "Hi, man!" });
         break;
-      case "female":
+      case "Female":
         formRef.current?.setFieldsValue({ note: "Hi, lady!" });
         break;
-      case "other":
+      case "Other":
         formRef.current?.setFieldsValue({ note: "Hi there!" });
         break;
       default:
@@ -54,9 +56,9 @@ const FormRegister = () => {
   const onFinish = async (values: any) => {
     console.log("Success:", values);
     const dataFormRegister = {
-      userName: values.userName,
-      remember: values.remember,
+      userName: values.phoneNumber,
       firstName: values.firstName,
+      name: values.name,
       lastName: values.lastName,
       password: values.password,
       passwordConfirm: values.passwordConfirm,
@@ -64,9 +66,35 @@ const FormRegister = () => {
       phoneNumber: values.phoneNumber,
       gender: values.gender,
     };
+    console.log(
+      "🚀 ~ file: index.tsx:69 ~ onFinish ~ dataFormRegister:",
+      dataFormRegister
+    );
+    const client = await getClient();
+    const res = await client.post("https://dam.vietlac.com/api/v1/User", {
+      body: Body.json({
+        userName: dataFormRegister.userName,
+        firstName: dataFormRegister.firstName,
+        name: dataFormRegister.name,
+        lastName: dataFormRegister.lastName,
+        password: dataFormRegister.password,
+        passwordConfirm:dataFormRegister.passwordConfirm,
+        emailAddress: dataFormRegister.emailAddress,
+        phoneNumber:dataFormRegister.phoneNumber,
+        gender: dataFormRegister.gender,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization-Token":
+          "ZGV2YWRtaW46MjY3OTk1YmQxMDdiYTllNTIzNGJlMzUzYmQ1MWU3ODU=",
+      },
+      type: "Json",
+      payload: null,
+    });
+    console.log("🚀 ~ file: index.tsx:91 ~ onFinish ~ res:", res);
 
-    form.resetFields();
-    message.success("Login Success!!");
+    // form.resetFields();
+    message.success("Register Success!!");
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -74,39 +102,19 @@ const FormRegister = () => {
   };
   const SubmitButton = ({ form }: { form: FormInstance }) => {
     const [submittable, setSubmittable] = React.useState(false);
-    // Watch all values
     const values = Form.useWatch([], form);
 
-    // React.useEffect(() => {
-    //   form.validateFields({ validateOnly: true }).then(
-    //     () => {
-    //       setSubmittable(true);
-    //     },
-    //     () => {
-    //       setSubmittable(false);
-    //     }
-    //   );
-    // }, [values]);
+    React.useEffect(() => {
+      form.validateFields({ validateOnly: true }).then(
+        () => {
+          setSubmittable(true);
+        },
+        () => {
+          setSubmittable(false);
+        }
+      );
+    }, [values]);
 
-    useEffect(() => {
-      var myHeaders = new Headers();
-      myHeaders.append("User-Agent", "Apidog/1.0.0 (https://apidog.com)");
-      myHeaders.append("Authorization", "Basic ZGV2YWRtaW46MTIzMTIz");
-      myHeaders.append("Accept", "*/*");
-      myHeaders.append("Host", "vls.vietlacapi.com");
-      myHeaders.append("Connection", "keep-alive");
-
-      var requestOptions = {
-        method: "GET",
-        headers: myHeaders,
-        redirect: "follow" as RequestRedirect,
-      };
-
-      fetch("https://vls.vietlacapi.com/api/v1/App/user", requestOptions)
-        .then((response) => response.text())
-        .then((result) => console.log(result))
-        .catch((error) => console.log("error", error));
-    }, []);
     return (
       <Button
         type="primary"
@@ -114,9 +122,7 @@ const FormRegister = () => {
         htmlType="submit"
         disabled={!submittable}
       >
-        <span
-          className={` navigate-sign-up-form-login text-center`}
-        >
+        <span className={` navigate-sign-up-form-login text-center`}>
           Đăng Ki
         </span>
       </Button>
@@ -124,14 +130,15 @@ const FormRegister = () => {
   };
   const onFill = () => {
     formRef.current?.setFieldsValue({
-      userName: "123456789",
+      userName: "0888363810",
       password: "password",
-      passwordConfirm: "passwordConfirm",
+      passwordConfirm: "password",
       firstName: "Đỗ",
+      name: "Nam",
       lastName: "Nam",
       emailAddress: "địachỉ@gmail.com",
-      phoneNumber: "12345678910",
-      gender: "male",
+      phoneNumber: "0888363810",
+      gender: "Male",
     });
   };
   return (
@@ -158,6 +165,28 @@ const FormRegister = () => {
             </Tooltip>
             <Form.Item<FieldType>
               name="firstName"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input your username!",
+                },
+              ]}
+              hasFeedback
+            >
+              <Input />
+            </Form.Item>
+          </Col>
+          <Col className="gutter-row" span={12}>
+            <span
+              className={` ${roboto.variable} font-light text-[black] text-[16px]  mb-[10px]  mr-[10px]`}
+            >
+              Ten
+            </span>
+            <Tooltip title="Hãy nhập teen của bạn!!">
+              <Typography.Link href="#API">Giải thích?</Typography.Link>
+            </Tooltip>
+            <Form.Item<FieldType>
+              name="name"
               rules={[
                 {
                   required: true,
@@ -294,9 +323,9 @@ const FormRegister = () => {
                 onChange={onGenderChange}
                 allowClear
               >
-                <Option value="male">male</Option>
-                <Option value="female">female</Option>
-                <Option value="other">other</Option>
+                <Option value="Male">Male</Option>
+                <Option value="Female">Female</Option>
+                <Option value="Other">Other</Option>
               </Select>
             </Form.Item>
             <Form.Item
@@ -314,22 +343,6 @@ const FormRegister = () => {
               }
             </Form.Item>
           </Col>
-          <Col span={24}>
-            <Form.Item<FieldType>
-              name="remember"
-              valuePropName=""
-              className="flex justify-center"
-            >
-              <Checkbox>
-                <span
-                  className={`${roboto.variable} font-light cursor-pointer  text-[black] text-[16px]  `}
-                >
-                  Remember me?
-                </span>
-              </Checkbox>
-            </Form.Item>
-          </Col>
-
           <Col span={24}>
             <Form.Item className="flex justify-center">
               <SubmitButton form={form} />
