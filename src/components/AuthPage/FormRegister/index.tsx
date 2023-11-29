@@ -1,4 +1,3 @@
-import axios from "axios";
 import {
   Button,
   Col,
@@ -10,14 +9,13 @@ import {
   Typography,
   message,
   Input,
-  Checkbox,
 } from "antd";
+import axios from "axios";
+import axiosTauriApiAdapter from "axios-tauri-api-adapter";
 import { Roboto } from "next/font/google";
-import { useRouter } from "next/navigation";
-
 import React, { useEffect } from "react";
-import { getAPIRegister } from "@/service/api";
 import { Body, getClient } from "@tauri-apps/api/http";
+import { getAPIRegister } from "@/service/api";
 const roboto = Roboto({
   subsets: ["latin"],
   weight: ["100", "300"],
@@ -70,27 +68,32 @@ const FormRegister = () => {
       "🚀 ~ file: index.tsx:69 ~ onFinish ~ dataFormRegister:",
       dataFormRegister
     );
-    const client = await getClient();
-    const res = await client.post("https://dam.vietlac.com/api/v1/User", {
-      body: Body.json({
-        userName: dataFormRegister.userName,
-        firstName: dataFormRegister.firstName,
-        name: dataFormRegister.name,
-        lastName: dataFormRegister.lastName,
-        password: dataFormRegister.password,
-        passwordConfirm:dataFormRegister.passwordConfirm,
-        emailAddress: dataFormRegister.emailAddress,
-        phoneNumber:dataFormRegister.phoneNumber,
-        gender: dataFormRegister.gender,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization-Token":
-          "ZGV2YWRtaW46MjY3OTk1YmQxMDdiYTllNTIzNGJlMzUzYmQ1MWU3ODU=",
-      },
-      type: "Json",
-      payload: null,
-    });
+    // const res = await getAPIRegister(dataFormRegister);
+    const res = await axios.post(
+      "http://localhost:8001/api/v1/auth/register",
+      dataFormRegister,
+      {
+      }
+    );
+    // const client = await axios.create({ adapter: axiosTauriApiAdapter });
+    // const res = await client.post("http://localhost:8001/api/v1/users", {
+    //   body: Body.json({
+    //     userName: dataFormRegister.phoneNumber,
+    //     firstName: dataFormRegister.firstName,
+    //     name: dataFormRegister.name,
+    //     lastName: dataFormRegister.lastName,
+    //     password: dataFormRegister.password,
+    //     passwordConfirm: dataFormRegister.passwordConfirm,
+    //     emailAddress: dataFormRegister.emailAddress,
+    //     phoneNumber: dataFormRegister.phoneNumber,
+    //     gender: dataFormRegister.gender,
+    //   }),
+    //   headers: {
+    //     "Content-Type": "application/x-www-form-urlencoded",
+    //     Authorization:
+    //       "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MDAwMzU0MjYsImV4cCI6MTcwMDAzNjAyNn0.B5cQ7kPAkWeA6ZZlt_wXCppr48xAzXPGwqyv4kDH8dE",
+    //   },
+    // });
     console.log("🚀 ~ file: index.tsx:91 ~ onFinish ~ res:", res);
 
     // form.resetFields();

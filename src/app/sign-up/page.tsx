@@ -118,7 +118,7 @@ const SignUpPage = () => {
             src="/GraphicSide.png"
           />
         </div>
-        <div className="container-right-sign-up-page mx-auto  max-w-[450px] max-h-[650px] w-full h-full my-auto">
+        <div className="container-right-sign-up-page mx-auto  max-w-[450px] max-h-[700px] w-full h-full my-auto">
           <div className="content-right-sign-up-page ">
             <HeaderLogo
               title={"Đăng Ký"}

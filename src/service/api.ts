@@ -37,11 +37,16 @@ const getAPIRegister = async (data: {
     }),
     headers: {
       "Content-Type": "application/json",
-      "Authorization-Token":
-        "ZGV2YWRtaW46MjY3OTk1YmQxMDdiYTllNTIzNGJlMzUzYmQ1MWU3ODU=",
+      Authorization: "ZGV2YWRtaW46MjY3OTk1YmQxMDdiYTllNTIzNGJlMzUzYmQ1MWU3ODU=",
     },
     type: "Json",
-    payload: null,
+    payload: {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization:
+          "ZGV2YWRtaW46MjY3OTk1YmQxMDdiYTllNTIzNGJlMzUzYmQ1MWU3ODU=",
+      },
+    },
   });
 };
 export { getAPILogin, getAPIRegister };

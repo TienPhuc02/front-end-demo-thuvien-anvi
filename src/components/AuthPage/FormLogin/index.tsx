@@ -11,6 +11,7 @@ import {
 } from "antd";
 import { Inter, Roboto } from "next/font/google";
 import { getAPILogin } from "@/service/api";
+import { useRouter } from "next/navigation";
 type FieldType = {
   userName?: string;
   password?: string;
@@ -23,15 +24,28 @@ const roboto = Roboto({
 });
 const FormLogin: React.FC = () => {
   const [form] = Form.useForm();
+  const router = useRouter();
   const formRef = React.useRef<FormInstance>(null);
   const onFinish = async (values: any) => {
     const dataFormLogin = {
       username: values.userName,
       password: values.password,
     };
+    console.log(
+      "🚀 ~ file: index.tsx:33 ~ onFinish ~ dataFormLogin:",
+      dataFormLogin
+    );
     const res = await getAPILogin(dataFormLogin);
     console.log("🚀 ~ file: index.tsx:33 ~ onFinish ~ res:", res);
-    form.resetFields();
+    // const res = await axios.post(
+    //   "http://localhost:8001/api/v1/auth/login",
+    //   dataFormLogin
+    // );
+    console.log("🚀 ~ file: index.tsx:39 ~ onFinish ~ res:", res);
+    if (res && res.data) {
+      router.push("/admin");
+      form.resetFields();
+    }
     message.success("Login Success!!");
   };
 

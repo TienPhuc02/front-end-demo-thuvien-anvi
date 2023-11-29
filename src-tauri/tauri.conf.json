@@ -67,9 +67,9 @@
     "windows": [
       {
         "fullscreen": false,
+        "title": "front-end-demo-thuvien-anvi",
         "height": 600,
         "resizable": true,
-        "title": "front-end-demo-thuvien-anvi",
         "width": 800
       }
     ]
